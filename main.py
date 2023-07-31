@@ -39,6 +39,7 @@ async def looping_task():
         if client.logged_in:
             expr = 'up' if is_scratchdb_up.text != None else 'down'
             print(f'sent {expr}')
+            await client.set_cloud('SERVER_OFFLINE', '0', encode=False)
             await client.set_cloud('RESPONSE', expr)
         
         await asyncio.sleep(1)
@@ -49,5 +50,9 @@ async def on_connect():
     if first:
         first = False
         client.loop.create_task(looping_task())
+    
+@client.event
+async def on_disconnect():
+    await client.set_cloud('SERVER_OFFLINE', '1', encode=False)
         
 client.run(SERVER_PASSWORD)
