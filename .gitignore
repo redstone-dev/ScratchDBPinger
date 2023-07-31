@@ -1,0 +1,5 @@
+# Don't change anything, please...
+# ...unless you know what you're doing
+
+.env
+.venv
