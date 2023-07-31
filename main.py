@@ -5,6 +5,7 @@ import requests
 from dotenv import dotenv_values
 from os.path import exists
 from sys import exit
+from time import time
 
 if not exists('.env'):
     print('ERROR * No .env file found!')
@@ -38,8 +39,10 @@ async def looping_task():
     while True:
         if client.logged_in:
             expr = 'up' if is_scratchdb_up.text != None else 'down'
-            print(f'sent {expr}')
+            timestamp = str(int(time()))
+            print(f'[{timestamp}] Sent {expr}')
             await client.set_cloud('SERVER_OFFLINE', '0', encode=False)
+            await client.set_cloud('TIMESTAMP', timestamp, encode=False)
             await client.set_cloud('RESPONSE', expr)
         
         await asyncio.sleep(1)
