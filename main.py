@@ -16,11 +16,12 @@ if not exists('.env'):
     print('      * Finally, run this script again.')
     exit(1)
 
+SERVER_USERNAME = dotenv_values('.env')['USER']
 SERVER_PASSWORD = dotenv_values('.env')['PASS']
 
 codec = BaseCodec()
 client = scratch3.CloudClient(
-    "Redstone1080", 
+    SERVER_USERNAME, 
     878884618, 
     disconnect_messages=True,
     encoder=codec.encode,
