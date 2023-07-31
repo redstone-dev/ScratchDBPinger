@@ -44,6 +44,9 @@ async def looping_task():
             await client.set_cloud('SERVER_OFFLINE', '0', encode=False)
             await client.set_cloud('TIMESTAMP', timestamp, encode=False)
             await client.set_cloud('RESPONSE', expr)
+            await client.set_cloud('TICK', '1', encode=False)
+            await asyncio.sleep(0.5)
+            await client.set_cloud('TICK', '0', encode=False)
         
         await asyncio.sleep(1)
 
