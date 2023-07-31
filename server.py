@@ -52,7 +52,7 @@ def main():
                     await asyncio.sleep(0.5)
                     await client.set_cloud('TICK', '0', encode=False)
                 except ConnectionClosedError as e:
-                    exit(0)
+                    pass
             
             await asyncio.sleep(1)
 
