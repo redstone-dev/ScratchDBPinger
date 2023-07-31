@@ -3,9 +3,11 @@ from scratchcloud.ext import BaseCodec
 import asyncio
 import requests
 from dotenv import dotenv_values
+from sys import exit
 from os.path import exists
 from sys import exit
 from time import time
+from websockets.exceptions import ConnectionClosedError
 
 if not exists('.env'):
     print('ERROR * No .env file found!')
@@ -41,12 +43,15 @@ async def looping_task():
             expr = 'up' if is_scratchdb_up.text != None else 'down'
             timestamp = str(int(time()) - 946684800)
             print(f'[{timestamp}] Sent {expr}')
-            await client.set_cloud('SERVER_OFFLINE', '0', encode=False)
-            await client.set_cloud('TIMESTAMP', timestamp, encode=False)
-            await client.set_cloud('RESPONSE', expr)
-            await client.set_cloud('TICK', '1', encode=False)
-            await asyncio.sleep(0.5)
-            await client.set_cloud('TICK', '0', encode=False)
+            try:
+                await client.set_cloud('SERVER_OFFLINE', '0', encode=False)
+                await client.set_cloud('TIMESTAMP', timestamp, encode=False)
+                await client.set_cloud('RESPONSE', expr)
+                await client.set_cloud('TICK', '1', encode=False)
+                await asyncio.sleep(0.5)
+                await client.set_cloud('TICK', '0', encode=False)
+            except ConnectionClosedError as e:
+                exit(0)
         
         await asyncio.sleep(1)
 
