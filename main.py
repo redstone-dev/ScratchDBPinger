@@ -39,7 +39,7 @@ async def looping_task():
     while True:
         if client.logged_in:
             expr = 'up' if is_scratchdb_up.text != None else 'down'
-            timestamp = str(int(time()))
+            timestamp = str(int(time()) - 946684800)
             print(f'[{timestamp}] Sent {expr}')
             await client.set_cloud('SERVER_OFFLINE', '0', encode=False)
             await client.set_cloud('TIMESTAMP', timestamp, encode=False)
